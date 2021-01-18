@@ -51,6 +51,15 @@ void loop_fn(void *arg)
     struct context *ctx = arg;
     process_events();
 
+    SDL_Rect r;
+    r.w = r.h = r.x = r.y = 5;
+    r.x += (ctx->x % 60);
+
+    Uint32 color = SDL_MapRGBA(ctx->screen->format, 120,120,0, 255);
+
+    SDL_FillRect(ctx->screen, NULL, 0);
+    SDL_FillRect(ctx->screen, &r, color);
+
     printf("x: %d, ticks: %d\n", ctx->x, SDL_GetTicks());
     SDL_UpdateWindowSurface(ctx->window);
 
@@ -66,8 +75,8 @@ int main()
     ctx->x = 0;
     SDL_Init(SDL_INIT_VIDEO);
 
-    ctx->window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 100, 100, SDL_WINDOW_SHOWN);
-    ctx->screen = SDL_GetWindowSurface(ctxwindow);
+    ctx->window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 128, 128, SDL_WINDOW_SHOWN);
+    ctx->screen = SDL_GetWindowSurface(ctx->window);
 
     emscripten_set_main_loop_arg(loop_fn, ctx, -1, simulate_infinite_loop); 
 }
